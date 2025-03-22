@@ -12,7 +12,7 @@ Questo programma vuole essere un modo per divertirsi a fare pratica con C dopo a
 ## INSTALLAZIONE
 Tramite terminale scaricare progetto:
 ```bash
-`git clone https://github.com/FlavioJack/algebra-lineare.git`
+git clone https://github.com/FlavioJack/algebra-lineare.git
 cd algebra-lineare/
 ```
 ## VERSIONE
