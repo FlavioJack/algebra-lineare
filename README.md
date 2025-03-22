@@ -4,10 +4,10 @@ Questo programma vuole essere un modo per divertirsi a fare pratica con C dopo a
 
 
 ## INDICE
--[Installazione](#installazione)
--[Versione](#versione)
--[Funzioni](#funzioni)
--[In futuro...](#novità...)
+- [Installazione](#installazione)
+- [Versione](#versione)
+- [Funzioni](#funzioni)
+- [Novità](#novità)
 
 ## INSTALLAZIONE
 Tramite terminale scaricare progetto:
@@ -23,6 +23,6 @@ Attualmente il programma è alla versione **0.1.1**.
 1. Calcolo rango matrice fino a ordine 2
 2. Calcolo determinante matrice fino a ordine 2
 
-## NOVITA'...
+## NOVITÀ
 
 1. Calcolo anche per matrici di ordine fino a 3.
