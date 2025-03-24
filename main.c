@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 int determinant(size_t ordine, const int matrice[][ordine]);
-//bool check_ridotta(const int matrice[][2]);
+bool check_ridotta(size_t ordine, const int matrice[][ordine]);
 //int count_pivot(const int matrice[][2]);
 
 
@@ -41,6 +41,7 @@ int main() {
 
     // calcolo determinante
     printf("Il determinante e': %d\n", determinant(order, matrix));
+    check_ridotta(order, matrix);
 /*
     // CALCOLO RANGO
     // Creo una matrice copia dove salvo la nuova matrice a scalini
@@ -133,16 +134,35 @@ int determinant(size_t ordine, const int matrice[][ordine])
     }
 }
 
-/*
-bool check_ridotta(const int matrice[][2])
+
+bool check_ridotta(size_t ordine, const int matrice[][ordine])
 {
-    if(matrice[0][0] != 0 && matrice[1][0] == 0 && matrice[1][1] != 0)
+    int previousPivot, actualPivot;
+    
+    for(size_t riga=0; riga<ordine; riga++)
     {
-        return true;
+        for(size_t elemCol=0; elemCol<ordine; elemCol++)
+        {
+            if(matrice[riga][elemCol] != 0)
+            {
+                actualPivot = elemCol;
+                if(actualPivot <= previousPivot && riga != 0)
+                {
+                    puts("La matrice non e' a scalini");
+                    return false;
+                }
+                break;
+            }
+            previousPivot = actualPivot;
+        }
+        
+        // condizione di stop è quando arriva a fondo array o quando trova elemento non nullo
     }
-    else return false;
+    puts("La matrice e' a scalini");
+    return true;
 }
 
+/*
 int count_pivot(const int matrice[][2])
 {
     if(check_ridotta(matrice))
