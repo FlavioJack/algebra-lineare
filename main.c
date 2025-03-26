@@ -3,36 +3,47 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-int determinant(const int matrice[][2]);
-bool check_ridotta(const int matrice[][2]);
-int count_pivot(const int matrice[][2]);
+int determinant(size_t ordine, const int matrice[][ordine]);
+bool check_ridotta(size_t ordine, const int matrice[][ordine]);
+//int count_pivot(const int matrice[][2]);
+
 
 int main() {
-    int v1[2], v2[2];
-    int matrice[2][2];
-    
-    puts("Inserisci i valori del vettore v1:"); // scelgo valori dei vettori
-    scanf("%d %d", &v1[0], &v1[1]);
-    puts("Inserisci i valori del vettore v2:");
-    scanf("%d %d", &v2[0], &v2[1]);
-    printf("I vettori sono: v1(%d,%d) v2(%d,%d)\n", v1[0], v1[1], v2[0], v2[1]);
-    
-    // inserisco vettori nella matrice
-    for(size_t i=0; i<2; i++) 
+
+    puts("Inserisci ordine matrice 2 o 3:");
+    int order;
+    scanf("%d", &order);
+
+    int matrix[order][order];
+
+    // inserzione valori matrice
+    puts("| INSERISCI I VALORI DELLA MATRICE |");
+    for(size_t i=0; i<order; i++)
     {
-        matrice[i][0] = v1[i];
-        matrice[i][1] = v2[i];
+        printf("Inserisci i valori della riga %zu\n", i+1);
+        for(size_t j=0; j<order; j++)
+        {
+            scanf("%d", &matrix[i][j]);
+        }  
     }
-    
-    printf("La matrice e':\n| %d %d |\n| %d %d |\n", v1[0], v2[0], v1[1], v2[1]);
-    
-    //calcolo det
-    printf("Il determinante e': %d\n", determinant(matrice));
-    
+    puts("");
 
-    
+    // stampa la matrice sul terminale
+    for(size_t i=0; i<order; i++)
+    {
+        for(size_t j=0; j<order; j++)
+        {
+            printf("%d ", matrix[i][j]);
+        }  
+        puts("");
+    }
+    puts("");
+
+    // calcolo determinante
+    printf("Il determinante e': %d\n", determinant(order, matrix));
+    check_ridotta(order, matrix);
+/*
     // CALCOLO RANGO
-
     // Creo una matrice copia dove salvo la nuova matrice a scalini
     int mRidotta[2][2];
     for(size_t i=0; i<2; i++)
@@ -69,28 +80,89 @@ int main() {
         printf("Rango = %d\n", count_pivot(mRidotta));
     }
 
-    
+    */
     return 0;
 }
 
 
-
-
-int determinant(const int matrice[][2])
+int determinant(size_t ordine, const int matrice[][ordine])
 {
-    int det;
-    det = matrice[0][0]*matrice[1][1] - (matrice[0][1]*matrice[1][0]);
-}
-
-bool check_ridotta(const int matrice[][2])
-{
-    if(matrice[0][0] != 0 && matrice[1][0] == 0 && matrice[1][1] != 0)
+    if(ordine==2)
     {
-        return true;
+        return matrice[0][0]*matrice[1][1] - (matrice[0][1]*matrice[1][0]);
     }
-    else return false;
+    else if(ordine == 3)
+    {
+        int matriceSarrus[ordine][ordine+2];
+        for(size_t i=0; i<ordine; i++)
+        {
+            for(size_t j=0; j<ordine; j++)
+            {
+                matriceSarrus[i][j] = matrice[i][j];
+            }  
+        }
+        for(size_t l=0; l<ordine; l++)
+        {
+            for(size_t m=ordine, n=0; n<ordine; m++, n++)
+            {
+                matriceSarrus[l][m] = matrice[l][n];
+            }
+        }
+        puts("La matrice costruita per Sarrus e': ");
+        for(size_t i=0; i<ordine; i++)
+        {
+            for(size_t j=0; j<ordine+2; j++)
+            {
+                printf("%d ", matriceSarrus[i][j]);
+            }  
+            puts("");
+        }
+        int a = matriceSarrus[0][0]*matriceSarrus[1][1]*matriceSarrus[2][2];
+        int b = matriceSarrus[0][1]*matriceSarrus[1][2]*matriceSarrus[2][3];
+        int c = matriceSarrus[0][2]*matriceSarrus[1][3]*matriceSarrus[2][4];
+        int d = matriceSarrus[0][2]*matriceSarrus[1][1]*matriceSarrus[2][0];
+        int e = matriceSarrus[0][3]*matriceSarrus[1][2]*matriceSarrus[2][1];
+        int f = matriceSarrus[0][4]*matriceSarrus[1][3]*matriceSarrus[2][2];
+
+        return a+b+c-d-e-f;
+         
+    }
+    else
+    {
+        puts("Ordine non accettato, probabilmente non disponibile.");
+        return -100000;
+    }
 }
 
+
+bool check_ridotta(size_t ordine, const int matrice[][ordine])
+{
+    int previousPivot, actualPivot;
+    
+    for(size_t riga=0; riga<ordine; riga++)
+    {
+        for(size_t elemCol=0; elemCol<ordine; elemCol++)
+        {
+            if(matrice[riga][elemCol] != 0)
+            {
+                actualPivot = elemCol;
+                if(actualPivot <= previousPivot && riga != 0)
+                {
+                    puts("La matrice non e' a scalini");
+                    return false;
+                }
+                break;
+            }
+            previousPivot = actualPivot;
+        }
+        
+        // condizione di stop è quando arriva a fondo array o quando trova elemento non nullo
+    }
+    puts("La matrice e' a scalini");
+    return true;
+}
+
+/*
 int count_pivot(const int matrice[][2])
 {
     if(check_ridotta(matrice))
@@ -103,3 +175,9 @@ int count_pivot(const int matrice[][2])
         return 1;
     }
 }
+
+*/
+
+
+
+
