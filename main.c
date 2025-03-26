@@ -10,9 +10,13 @@ bool check_ridotta(size_t ordine, const int matrice[][ordine]);
 
 int main() {
 
-    puts("Inserisci ordine matrice 2 o 3:");
     int order;
-    scanf("%d", &order);
+    do
+    {
+        puts("Inserisci ordine matrice 2 o 3:");
+        scanf("%d", &order);
+    }
+    while(!(order == 2 || order == 3));
 
     int matrix[order][order];
 
@@ -33,7 +37,7 @@ int main() {
     {
         for(size_t j=0; j<order; j++)
         {
-            printf("%d ", matrix[i][j]);
+            printf("%3d ", matrix[i][j]);
         }  
         puts("");
     }
@@ -113,7 +117,7 @@ int determinant(size_t ordine, const int matrice[][ordine])
         {
             for(size_t j=0; j<ordine+2; j++)
             {
-                printf("%d ", matriceSarrus[i][j]);
+                printf("%3d ", matriceSarrus[i][j]);
             }  
             puts("");
         }
