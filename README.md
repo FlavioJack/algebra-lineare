@@ -19,7 +19,7 @@ cd algebra-lineare/
 Attualmente il file eseguibile si chiama "a.exe".
 
 ## VERSIONE
-Attualmente il programma è alla versione **0.2.0**.
+Attualmente il programma è alla versione **0.2.1**.
 
 ## FUNZIONI
 
