@@ -16,7 +16,7 @@ git clone https://github.com/FlavioJack/algebra-lineare.git
 cd algebra-lineare/
 ```
 ## VERSIONE
-Attualmente il programma è alla versione **0.1.1**.
+Attualmente il programma è alla versione **0.2.0**.
 
 ## FUNZIONI
 
