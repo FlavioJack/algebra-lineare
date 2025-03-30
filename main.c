@@ -142,6 +142,7 @@ bool check_ridotta(size_t ordine, const int matrice[][ordine])
     int previousPivot = -1; // assegnamo un valore tale che il confronto if(actualPivot <= previousPivot) e' sempre false 
     // questo perche' nel primo ciclo di controllo l'elemento di posto matrice[0][0] non puo' essere confrontato con nessun altro pivot precedente essendo il primo
     int actualPivot;
+    int countPivot = 0;
 
     for(size_t riga=0; riga<ordine; riga++)
     {
@@ -150,18 +151,23 @@ bool check_ridotta(size_t ordine, const int matrice[][ordine])
             if(matrice[riga][elemCol] != 0)
             {
                 actualPivot = elemCol;
-                if(actualPivot <= previousPivot && riga != 0)
+                if(actualPivot <= previousPivot)
                 {
                     puts("La matrice non e' a scalini");
                     return false;
                 }
+                else 
+                {
+                    countPivot++;
+                    previousPivot = actualPivot;
+                }
                 break;
             }
-            previousPivot = actualPivot;
         }
         // condizione di stop è quando arriva a fondo array o quando trova elemento non nullo
     }
     puts("La matrice e' a scalini");
+    printf("Ci sono %d pivot", countPivot);
     return true;
 }
 
