@@ -170,23 +170,3 @@ bool check_ridotta(size_t ordine, const int matrice[][ordine])
     printf("Ci sono %d pivot", countPivot);
     return true;
 }
-
-/*
-int count_pivot(const int matrice[][2])
-{
-    if(check_ridotta(matrice))
-    {
-        puts("La matrice e' ridotta a scalini");
-        return 2;
-    }
-    else if(matrice[0][0] != 0)
-    {
-        return 1;
-    }
-}
-
-*/
-
-
-
-
