@@ -3,8 +3,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-int determinant(size_t ordine, const int matrice[][ordine]);
-bool check_ridotta(size_t ordine, const int matrice[][ordine]);
+void print_matrix(size_t order, const int matrix[order][order]); 
+int determinant(size_t order, const int matrice[order][order]);
+bool check_ridotta(size_t order, const int matrice[order][order]);
 //int count_pivot(const int matrice[][2]);
 
 
@@ -87,34 +88,48 @@ int main() {
     return 0;
 }
 
-
-int determinant(size_t ordine, const int matrice[][ordine])
+void print_matrix(size_t order, const int matrix[order][order])
 {
-    if(ordine==2)
+    // stampa la matrice sul terminale
+    for(size_t rows=0; rows<order; rows++)
+    {
+        for(size_t cols=0; cols<order; cols++)
+        {
+            printf("%3d ", matrix[rows][cols]);
+        }  
+        puts("");
+    }
+    puts("");
+}
+
+
+int determinant(size_t order, const int matrice[order][order])
+{
+    if(order==2)
     {
         return matrice[0][0]*matrice[1][1] - (matrice[0][1]*matrice[1][0]);
     }
-    else if(ordine == 3)
+    else if(order == 3)
     {
-        int matriceSarrus[ordine][ordine+2];
-        for(size_t i=0; i<ordine; i++)
+        int matriceSarrus[order][order+2];
+        for(size_t i=0; i<order; i++)
         {
-            for(size_t j=0; j<ordine; j++)
+            for(size_t j=0; j<order; j++)
             {
                 matriceSarrus[i][j] = matrice[i][j];
             }  
         }
-        for(size_t l=0; l<ordine; l++)
+        for(size_t l=0; l<order; l++)
         {
-            for(size_t m=ordine, n=0; n<ordine; m++, n++)
+            for(size_t m=order, n=0; n<order; m++, n++)
             {
                 matriceSarrus[l][m] = matrice[l][n];
             }
         }
         puts("La matrice costruita per Sarrus e': ");
-        for(size_t i=0; i<ordine; i++)
+        for(size_t i=0; i<order; i++)
         {
-            for(size_t j=0; j<ordine+2; j++)
+            for(size_t j=0; j<order+2; j++)
             {
                 printf("%3d ", matriceSarrus[i][j]);
             }  
@@ -137,16 +152,16 @@ int determinant(size_t ordine, const int matrice[][ordine])
 }
 
 
-bool check_ridotta(size_t ordine, const int matrice[][ordine])
+bool check_ridotta(size_t order, const int matrice[order][order])
 {
     int previousPivot = -1; // assegnamo un valore tale che il confronto if(actualPivot <= previousPivot) e' sempre false 
     // questo perche' nel primo ciclo di controllo l'elemento di posto matrice[0][0] non puo' essere confrontato con nessun altro pivot precedente essendo il primo
     int actualPivot;
     int countPivot = 0;
 
-    for(size_t riga=0; riga<ordine; riga++)
+    for(size_t riga=0; riga<order; riga++)
     {
-        for(size_t elemCol=0; elemCol<ordine; elemCol++)
+        for(size_t elemCol=0; elemCol<order; elemCol++)
         {
             if(matrice[riga][elemCol] != 0)
             {
