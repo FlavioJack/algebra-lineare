@@ -18,9 +18,8 @@ int main() {
     }
     while(!(order == 2 || order == 3));
 
-    int matrix[order][order];
-
     // inserzione valori matrice
+    int matrix[order][order];
     puts("| INSERISCI I VALORI DELLA MATRICE |");
     for(size_t i=0; i<order; i++)
     {
@@ -133,8 +132,7 @@ int determinant(size_t ordine, const int matrice[][ordine])
     }
     else
     {
-        puts("Ordine non accettato, probabilmente non disponibile.");
-        return -100000;
+        puts("Ordine non accettato.");
     }
 }
 
@@ -142,7 +140,7 @@ int determinant(size_t ordine, const int matrice[][ordine])
 bool check_ridotta(size_t ordine, const int matrice[][ordine])
 {
     int previousPivot, actualPivot;
-    
+
     for(size_t riga=0; riga<ordine; riga++)
     {
         for(size_t elemCol=0; elemCol<ordine; elemCol++)
