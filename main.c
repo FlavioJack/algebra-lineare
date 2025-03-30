@@ -6,16 +6,15 @@
 void print_matrix(size_t order, const int matrix[order][order]); 
 int determinant(size_t order, const int matrice[order][order]);
 bool check_ridotta(size_t order, const int matrice[order][order]);
-//int count_pivot(const int matrice[][2]);
 
 
 int main() {
 
-    int order;
+    size_t order;
     do
     {
         puts("Inserisci ordine matrice 2 o 3:");
-        scanf("%d", &order);
+        scanf("%zu", &order);
     }
     while(!(order == 2 || order == 3));
 
@@ -32,16 +31,7 @@ int main() {
     }
     puts("");
 
-    // stampa la matrice sul terminale
-    for(size_t i=0; i<order; i++)
-    {
-        for(size_t j=0; j<order; j++)
-        {
-            printf("%3d ", matrix[i][j]);
-        }  
-        puts("");
-    }
-    puts("");
+    print_matrix(order, matrix);
 
     // calcolo determinante
     printf("Il determinante e': %d\n", determinant(order, matrix));
