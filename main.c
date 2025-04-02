@@ -5,12 +5,13 @@
 
 void print_matrix(size_t order, const int matrix[order][order]); 
 int determinant(size_t order, const int matrice[order][order]);
-bool check_ridotta(size_t order, const int matrice[order][order]);
+bool check_ridotta(size_t order, const int matrice[order][order], int * countPivot);
 
 
 int main() {
-
+    int *countPivot_ptr;
     size_t order;
+
     do
     {
         puts("Inserisci ordine matrice 2 o 3:");
@@ -18,7 +19,7 @@ int main() {
     }
     while(!(order == 2 || order == 3));
 
-    // inserzione valori matrice
+    // Inserzione valori matrice
     int matrix[order][order];
     puts("| INSERISCI I VALORI DELLA MATRICE |");
     for(size_t i=0; i<order; i++)
@@ -31,11 +32,20 @@ int main() {
     }
     puts("");
 
+    // Stampa matrice
     print_matrix(order, matrix);
 
-    // calcolo determinante
+    // Calcolo determinante
     printf("Il determinante e': %d\n", determinant(order, matrix));
-    check_ridotta(order, matrix);
+
+    // Calcolo rango
+    // se la matrice e' ridotta allora il numerio di pivot corrisponde al numero del rango
+    if(check_ridotta(order, matrix, countPivot_ptr)) 
+    {
+        printf("La matrice e' a scalini ed ha rango %d\n", *countPivot_ptr);
+    }
+    // else se la matrice non e' a scalini va ridotta a scalini e bisogna ricontrollare a quel punto il rango
+
 /*
     // CALCOLO RANGO
     // Creo una matrice copia dove salvo la nuova matrice a scalini
@@ -48,22 +58,6 @@ int main() {
         }
     }
 
-    // controllo se una delle due colonne e' nulla e l'altra no
-    if( ((matrice[0][0] != 0 && matrice[1][0] != 0) && (matrice[0][1] == 0 && matrice[1][1] == 0)) || ((matrice[0][0] == 0 && matrice[1][0] == 0) && (matrice[0][1] != 0 && matrice[1][1] != 0)) )
-    {
-        puts("Rango = 1");
-    }
-    // se e' nulla
-    else if(matrice[0][0] == 0 && matrice[0][1] == 0 && matrice[1][0] == 0 && matrice[1][1] == 0)
-    {
-        puts("La matrice e' nulla");
-        puts("Rango = 0");
-    }
-    else if(check_ridotta(matrice))
-    {
-        puts("La matrice e' ridotta a scalini");
-        puts("Rango = 2");
-    }
     // se e' piena si riduce a scalini
     else
     {
@@ -116,6 +110,7 @@ int determinant(size_t order, const int matrice[order][order])
                 matriceSarrus[l][m] = matrice[l][n];
             }
         }
+        
         puts("La matrice costruita per Sarrus e': ");
         for(size_t i=0; i<order; i++)
         {
@@ -125,6 +120,7 @@ int determinant(size_t order, const int matrice[order][order])
             }  
             puts("");
         }
+
         int a = matriceSarrus[0][0]*matriceSarrus[1][1]*matriceSarrus[2][2];
         int b = matriceSarrus[0][1]*matriceSarrus[1][2]*matriceSarrus[2][3];
         int c = matriceSarrus[0][2]*matriceSarrus[1][3]*matriceSarrus[2][4];
@@ -142,12 +138,12 @@ int determinant(size_t order, const int matrice[order][order])
 }
 
 
-bool check_ridotta(size_t order, const int matrice[order][order])
+bool check_ridotta(size_t order, const int matrice[order][order], int * countPivot)
 {
     int previousPivot = -1; // assegnamo un valore tale che il confronto if(actualPivot <= previousPivot) e' sempre false 
     // questo perche' nel primo ciclo di controllo l'elemento di posto matrice[0][0] non puo' essere confrontato con nessun altro pivot precedente essendo il primo
     int actualPivot;
-    int countPivot = 0;
+    *countPivot = 0; // reset pivot count
 
     for(size_t riga=0; riga<order; riga++)
     {
@@ -158,12 +154,12 @@ bool check_ridotta(size_t order, const int matrice[order][order])
                 actualPivot = elemCol;
                 if(actualPivot <= previousPivot)
                 {
-                    puts("La matrice non e' a scalini");
                     return false;
+                    puts("La matrice non e' a scalini");
                 }
                 else 
                 {
-                    countPivot++;
+                    (*countPivot)++;
                     previousPivot = actualPivot;
                 }
                 break;
@@ -171,7 +167,6 @@ bool check_ridotta(size_t order, const int matrice[order][order])
         }
         // condizione di stop è quando arriva a fondo array o quando trova elemento non nullo
     }
-    puts("La matrice e' a scalini");
-    printf("Ci sono %d pivot", countPivot);
+    // printf("Ci sono %d pivot\n", *countPivot);
     return true;
 }
