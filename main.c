@@ -4,8 +4,8 @@
 #include <stdbool.h>
 
 void print_matrix(size_t order, const int matrix[order][order]); 
-int determinant(size_t order, const int matrice[order][order]);
-bool check_ridotta(size_t order, const int matrice[order][order], int * countPivot);
+int determinant(size_t order, const int matrix[order][order]);
+bool check_reduced(size_t order, const int matrix[order][order], int * countPivot); //reduced row echelon form function
 
 
 int main() {
@@ -40,7 +40,7 @@ int main() {
 
     // Calcolo rango
     // se la matrice e' ridotta allora il numeri di pivot corrisponde al numero del rango
-    if(check_ridotta(order, matrix, countPivot_ptr)) 
+    if(check_reduced(order, matrix, countPivot_ptr)) 
     {
         printf("La matrice e' a scalini ed ha rango %d\n", *countPivot_ptr);
     }
@@ -48,12 +48,12 @@ int main() {
     // else 
 
     // Creo una matrice copia dove salvo la nuova matrice a scalini
-    int mRidotta[order][order];
+    int reducedMatrix[order][order];
     for(size_t i=0; i<order; i++)
     {
         for(size_t j=0; j<order; j++)
         {
-            mRidotta[i][j] = matrix[i][j];
+            reducedMatrix[i][j] = matrix[i][j];
         }
     }
 
@@ -77,27 +77,27 @@ void print_matrix(size_t order, const int matrix[order][order])
 }
 
 
-int determinant(size_t order, const int matrice[order][order])
+int determinant(size_t order, const int matrix[order][order])
 {
     if(order==2)
     {
-        return matrice[0][0]*matrice[1][1] - (matrice[0][1]*matrice[1][0]);
+        return matrix[0][0]*matrix[1][1] - (matrix[0][1]*matrix[1][0]);
     }
     else if(order == 3)
     {
-        int matriceSarrus[order][order+2];
+        int matrixSarrus[order][order+2];
         for(size_t i=0; i<order; i++)
         {
             for(size_t j=0; j<order; j++)
             {
-                matriceSarrus[i][j] = matrice[i][j];
+                matrixSarrus[i][j] = matrix[i][j];
             }  
         }
         for(size_t l=0; l<order; l++)
         {
             for(size_t m=order, n=0; n<order; m++, n++)
             {
-                matriceSarrus[l][m] = matrice[l][n];
+                matrixSarrus[l][m] = matrix[l][n];
             }
         }
         
@@ -106,17 +106,17 @@ int determinant(size_t order, const int matrice[order][order])
         {
             for(size_t j=0; j<order+2; j++)
             {
-                printf("%3d ", matriceSarrus[i][j]);
+                printf("%3d ", matrixSarrus[i][j]);
             }  
             puts("");
         }
 
-        int a = matriceSarrus[0][0]*matriceSarrus[1][1]*matriceSarrus[2][2];
-        int b = matriceSarrus[0][1]*matriceSarrus[1][2]*matriceSarrus[2][3];
-        int c = matriceSarrus[0][2]*matriceSarrus[1][3]*matriceSarrus[2][4];
-        int d = matriceSarrus[0][2]*matriceSarrus[1][1]*matriceSarrus[2][0];
-        int e = matriceSarrus[0][3]*matriceSarrus[1][2]*matriceSarrus[2][1];
-        int f = matriceSarrus[0][4]*matriceSarrus[1][3]*matriceSarrus[2][2];
+        int a = matrixSarrus[0][0]*matrixSarrus[1][1]*matrixSarrus[2][2];
+        int b = matrixSarrus[0][1]*matrixSarrus[1][2]*matrixSarrus[2][3];
+        int c = matrixSarrus[0][2]*matrixSarrus[1][3]*matrixSarrus[2][4];
+        int d = matrixSarrus[0][2]*matrixSarrus[1][1]*matrixSarrus[2][0];
+        int e = matrixSarrus[0][3]*matrixSarrus[1][2]*matrixSarrus[2][1];
+        int f = matrixSarrus[0][4]*matrixSarrus[1][3]*matrixSarrus[2][2];
 
         return a+b+c-d-e-f;
          
@@ -129,18 +129,18 @@ int determinant(size_t order, const int matrice[order][order])
 }
 
 /* su processore arm del mac M1 compare errore "zsh: bus error" - risolvere con malloc */
-bool check_ridotta(size_t order, const int matrice[order][order], int * countPivot)
+bool check_reduced(size_t order, const int matrix[order][order], int * countPivot)
 {
     int previousPivot = -1; // assegnamo un valore tale che il confronto if(actualPivot <= previousPivot) e' sempre false 
     // questo perche' nel primo ciclo di controllo l'elemento di posto matrice[0][0] non puo' essere confrontato con nessun altro pivot precedente essendo il primo
     int actualPivot;
     *countPivot = 0; // reset pivot count
 
-    for(size_t riga=0; riga<order; riga++)
+    for(size_t row=0; row<order; row++)
     {
         for(size_t elemCol=0; elemCol<order; elemCol++)
         {
-            if(matrice[riga][elemCol] != 0)
+            if(matrix[row][elemCol] != 0)
             {
                 actualPivot = elemCol;
                 if(actualPivot <= previousPivot)
