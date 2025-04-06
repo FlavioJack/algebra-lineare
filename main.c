@@ -10,8 +10,8 @@ bool check_ridotta(size_t order, const int matrice[order][order], int * countPiv
 
 int main() {
     int *countPivot_ptr;
+    // inserisco ordine della matrice
     size_t order;
-
     do
     {
         puts("Inserisci ordine matrice 2 o 3:");
@@ -39,36 +39,26 @@ int main() {
     printf("Il determinante e': %d\n", determinant(order, matrix));
 
     // Calcolo rango
-    // se la matrice e' ridotta allora il numerio di pivot corrisponde al numero del rango
+    // se la matrice e' ridotta allora il numeri di pivot corrisponde al numero del rango
     if(check_ridotta(order, matrix, countPivot_ptr)) 
     {
         printf("La matrice e' a scalini ed ha rango %d\n", *countPivot_ptr);
     }
-    // else se la matrice non e' a scalini va ridotta a scalini e bisogna ricontrollare a quel punto il rango
+    // se la matrice non e' a scalini va ridotta a scalini e bisogna ricontrollare a quel punto il rango
+    // else 
 
-/*
-    // CALCOLO RANGO
     // Creo una matrice copia dove salvo la nuova matrice a scalini
-    int mRidotta[2][2];
-    for(size_t i=0; i<2; i++)
+    int mRidotta[order][order];
+    for(size_t i=0; i<order; i++)
     {
-        for(size_t j=0; j<2; j++)
+        for(size_t j=0; j<order; j++)
         {
-            mRidotta[i][j] = matrice[i][j];
+            mRidotta[i][j] = matrix[i][j];
         }
     }
 
-    // se e' piena si riduce a scalini
-    else
-    {
-        int alpha = -(matrice[1][0]/matrice[0][0]);
-        mRidotta[1][0] = matrice[1][0] + (alpha*matrice[0][0]);  
-        mRidotta[1][1] = matrice[1][1] + (alpha*matrice[0][1]);
-        printf("La matrice ridotta e':\n| %d %d |\n| %d %d |\n", mRidotta[0][0], mRidotta[0][1], mRidotta[1][0], mRidotta[1][1]);
-        printf("Rango = %d\n", count_pivot(mRidotta));
-    }
-
-    */
+    
+    
     return 0;
 }
 
@@ -134,10 +124,11 @@ int determinant(size_t order, const int matrice[order][order])
     else
     {
         puts("Ordine non accettato.");
+        return 1;
     }
 }
 
-
+/* su processore arm del mac M1 compare errore "zsh: bus error" - risolvere con malloc */
 bool check_ridotta(size_t order, const int matrice[order][order], int * countPivot)
 {
     int previousPivot = -1; // assegnamo un valore tale che il confronto if(actualPivot <= previousPivot) e' sempre false 
