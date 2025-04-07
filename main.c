@@ -5,11 +5,11 @@
 
 void print_matrix(size_t order, const int matrix[order][order]); 
 int determinant(size_t order, const int matrix[order][order]);
-bool check_reduced(size_t order, const int matrix[order][order], int * countPivot); //reduced row echelon form function
+bool check_reduced(size_t order, const int matrix[order][order], int* countPivot); //reduced row echelon form function
 
 
 int main() {
-    int *countPivot_ptr;
+    int countPivot_ptr;
     // inserisco ordine della matrice
     size_t order;
     do
@@ -40,9 +40,9 @@ int main() {
 
     // Calcolo rango
     // se la matrice e' ridotta allora il numeri di pivot corrisponde al numero del rango
-    if(check_reduced(order, matrix, countPivot_ptr)) 
+    if( check_reduced(order, matrix, &countPivot_ptr) ) 
     {
-        printf("La matrice e' a scalini ed ha rango %d\n", *countPivot_ptr);
+        printf("La matrice e' a scalini ed ha rango %d\n", countPivot_ptr);
     }
     // se la matrice non e' a scalini va ridotta a scalini e bisogna ricontrollare a quel punto il rango
     // else 
@@ -124,12 +124,12 @@ int determinant(size_t order, const int matrix[order][order])
     else
     {
         puts("Ordine non accettato.");
-        return 1;
+        return -10000;
     }
 }
 
 /* su processore arm del mac M1 compare errore "zsh: bus error" - risolvere con malloc */
-bool check_reduced(size_t order, const int matrix[order][order], int * countPivot)
+bool check_reduced(size_t order, const int matrix[order][order], int* countPivot)
 {
     int previousPivot = -1; // assegnamo un valore tale che il confronto if(actualPivot <= previousPivot) e' sempre false 
     // questo perche' nel primo ciclo di controllo l'elemento di posto matrice[0][0] non puo' essere confrontato con nessun altro pivot precedente essendo il primo
@@ -145,8 +145,8 @@ bool check_reduced(size_t order, const int matrix[order][order], int * countPivo
                 actualPivot = elemCol;
                 if(actualPivot <= previousPivot)
                 {
-                    return false;
                     puts("La matrice non e' a scalini");
+                    return false;
                 }
                 else 
                 {
