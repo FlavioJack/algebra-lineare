@@ -128,7 +128,7 @@ int determinant(size_t order, const int matrix[order][order])
     }
 }
 
-/* su processore arm del mac M1 compare errore "zsh: bus error" - risolvere con malloc */
+
 bool check_reduced(size_t order, const int matrix[order][order], int* countPivot)
 {
     int previousPivot = -1; // assegnamo un valore tale che il confronto if(actualPivot <= previousPivot) e' sempre false 
