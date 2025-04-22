@@ -29,8 +29,8 @@ Attualmente il programma è alla versione **0.2.1**.
 2. Calcolo determinante matrice fino a ordine 3.
 
 ## NOVITA
-1. Gestione inserimento valori errati.
-2. Calcolo rango e determinante per matrici di ordine fino a 3.
+1. Calcolo rango e determinante per matrici di ordine fino a 3.
 
 ## PROSSIMAMENTE
 1. Operazioni di somma e prodotto tra matrici, prodotto matrice per scalare e matrice inversa.
+2. Gestione inserimento valori errati.
